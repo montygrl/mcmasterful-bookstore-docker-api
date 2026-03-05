@@ -5,14 +5,15 @@
 
   "compilerOptions": {
     "lib": ["es2023"],
-    "module": "node16",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "target": "es2022",
 
+    "experimentalDecorators": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node16",
-    "resolveJsonModule": true,
+    "resolveJsonModule": true
   }
 }
