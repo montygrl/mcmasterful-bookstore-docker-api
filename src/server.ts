@@ -6,37 +6,38 @@ import { koaSwagger } from 'koa2-swagger-ui';
 import { RegisterRoutes } from '../build/routes';
 import { connectToDatabase } from './db';
 import swagger from '../build/swagger.json';
+import { Db } from 'mongodb';
 
-const app = new Koa();
-const router = new Router();
+export default async function server(port: number = 3000, testing: boolean = false): Promise<{ server: ReturnType<Koa['listen']>, state: Db }> {
+    const app = new Koa();
+    const router = new Router();
 
-app.use(cors());
-app.use(koaBody());
+    const state = await connectToDatabase();
 
-// Swagger UI at http://localhost:3000/docs
-app.use(koaSwagger({
-    routePrefix: '/docs',
-    specPrefix: '/docs/spec',
-    exposeSpec: true,
-    swaggerOptions: {
-        spec: swagger
-    }
-}));
+    app.use(cors());
+    app.use(koaBody());
 
-// Pass the router (not app) to tsoa
-RegisterRoutes(router);
+    app.use(koaSwagger({
+        routePrefix: '/docs',
+        specPrefix: '/docs/spec',
+        exposeSpec: true,
+        swaggerOptions: {
+            spec: swagger
+        }
+    }));
 
-// Mount the router onto the app
-app.use(router.routes());
-app.use(router.allowedMethods());
+    RegisterRoutes(router);
 
-connectToDatabase()
-  .then(() => {
-    app.listen(3000, () => {
-      console.log('Server listening on port 3000');
+    app.use(router.routes());
+    app.use(router.allowedMethods());
+
+    const instance = app.listen(port, () => {
+        if (!testing) console.log(`Server listening on port ${port}`);
     });
-  })
-  .catch((err) => {
-    console.error('Failed to connect to database:', err);
-    process.exit(1);
-  });
+
+    return { server: instance, state };
+}
+
+if (process.env.NODE_ENV !== 'test') {
+    server(3000);
+}
