@@ -8,11 +8,28 @@ import { connectToDatabase } from './db';
 import swagger from '../build/swagger.json';
 import { Db } from 'mongodb';
 
-export default async function server(port: number = 3000, testing: boolean = false): Promise<{ server: ReturnType<Koa['listen']>, state: Db }> {
-    const app = new Koa();
+export interface AppBookDatabaseState {
+    bookDb: Db;
+}
+
+export interface AppWarehouseDatabaseState {
+    warehouseDb: Db;
+}
+
+export default async function server(port: number = 3000, testing: boolean = false): Promise<{ server: ReturnType<Koa['listen']>, state: AppBookDatabaseState & AppWarehouseDatabaseState }> {
+    const app = new Koa<AppBookDatabaseState & AppWarehouseDatabaseState, Koa.DefaultContext>();
     const router = new Router();
 
-    const state = await connectToDatabase();
+    const db = await connectToDatabase();
+    const state: AppBookDatabaseState & AppWarehouseDatabaseState = {
+        bookDb: db,
+        warehouseDb: db
+    };
+
+    app.use(async (ctx, next): Promise<void> => {
+        ctx.state = state;
+        await next();
+    });
 
     app.use(cors());
     app.use(koaBody());
