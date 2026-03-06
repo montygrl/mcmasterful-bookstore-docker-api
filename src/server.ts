@@ -3,9 +3,9 @@ import cors from '@koa/cors';
 import zodRouter from 'koa-zod-router';
 import qs from 'koa-qs';
 import { connectToDatabase } from './db';
-import { registerBookRoutes } from './books/book_routes';
-import { registerWarehouseRoutes } from './warehouse/routes';
-import { registerOrderRoutes } from './orders/routes';
+import { registerBookRoutes } from './books/book.route';
+import { registerWarehouseRoutes } from './warehouse/warehouse.route';
+import { registerOrderRoutes } from './orders/orders.route';
 
 const app = new Koa();
 

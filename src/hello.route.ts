@@ -7,3 +7,4 @@ export class HelloRoute {
     return `Hello ${name}`;
   }
 }
+
