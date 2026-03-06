@@ -1,4 +1,5 @@
-export type BookID = string;
+import type { BookID } from '../types';
+export type { BookID };
 export type OrderId = string;
 
 export interface Order {

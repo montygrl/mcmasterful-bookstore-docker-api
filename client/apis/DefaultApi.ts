@@ -14,6 +14,77 @@
 
 
 import * as runtime from '../runtime';
+import type {
+  BookInfo,
+  CreateBookBody,
+  CreateOrUpdateBook200Response,
+  CreateOrder200Response,
+  CreateOrderBody,
+  FulfillOrderBody,
+  GetBookStock200Response,
+  Order,
+  PlaceOnShelfBody,
+  ShelfStock,
+} from '../models/index';
+import {
+    BookInfoFromJSON,
+    BookInfoToJSON,
+    CreateBookBodyFromJSON,
+    CreateBookBodyToJSON,
+    CreateOrUpdateBook200ResponseFromJSON,
+    CreateOrUpdateBook200ResponseToJSON,
+    CreateOrder200ResponseFromJSON,
+    CreateOrder200ResponseToJSON,
+    CreateOrderBodyFromJSON,
+    CreateOrderBodyToJSON,
+    FulfillOrderBodyFromJSON,
+    FulfillOrderBodyToJSON,
+    GetBookStock200ResponseFromJSON,
+    GetBookStock200ResponseToJSON,
+    OrderFromJSON,
+    OrderToJSON,
+    PlaceOnShelfBodyFromJSON,
+    PlaceOnShelfBodyToJSON,
+    ShelfStockFromJSON,
+    ShelfStockToJSON,
+} from '../models/index';
+
+export interface CreateOrUpdateBookRequest {
+    createBookBody: CreateBookBody;
+}
+
+export interface CreateOrderRequest {
+    createOrderBody: CreateOrderBody;
+}
+
+export interface DeleteBookRequest {
+    book: string;
+}
+
+export interface FindBookLocationsRequest {
+    bookId: string;
+}
+
+export interface FulfillOrderRequest {
+    orderId: string;
+    fulfillOrderBody: FulfillOrderBody;
+}
+
+export interface GetBookInfoRequest {
+    book: string;
+}
+
+export interface GetBookStockRequest {
+    bookId: string;
+}
+
+export interface GetOrderRequest {
+    orderId: string;
+}
+
+export interface PlaceBooksOnShelfRequest {
+    placeOnShelfBody: PlaceOnShelfBody;
+}
 
 export interface SayHelloRequest {
     name: string;
@@ -23,6 +94,501 @@ export interface SayHelloRequest {
  * 
  */
 export class DefaultApi extends runtime.BaseAPI {
+
+    /**
+     * Creates request options for createOrUpdateBook without sending the request
+     */
+    async createOrUpdateBookRequestOpts(requestParameters: CreateOrUpdateBookRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['createBookBody'] == null) {
+            throw new runtime.RequiredError(
+                'createBookBody',
+                'Required parameter "createBookBody" was null or undefined when calling createOrUpdateBook().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/books`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateBookBodyToJSON(requestParameters['createBookBody']),
+        };
+    }
+
+    /**
+     * Create or update a book
+     */
+    async createOrUpdateBookRaw(requestParameters: CreateOrUpdateBookRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateOrUpdateBook200Response>> {
+        const requestOptions = await this.createOrUpdateBookRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateOrUpdateBook200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Create or update a book
+     */
+    async createOrUpdateBook(requestParameters: CreateOrUpdateBookRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateOrUpdateBook200Response> {
+        const response = await this.createOrUpdateBookRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for createOrder without sending the request
+     */
+    async createOrderRequestOpts(requestParameters: CreateOrderRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['createOrderBody'] == null) {
+            throw new runtime.RequiredError(
+                'createOrderBody',
+                'Required parameter "createOrderBody" was null or undefined when calling createOrder().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/orders`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: CreateOrderBodyToJSON(requestParameters['createOrderBody']),
+        };
+    }
+
+    /**
+     * Create a new order
+     */
+    async createOrderRaw(requestParameters: CreateOrderRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<CreateOrder200Response>> {
+        const requestOptions = await this.createOrderRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => CreateOrder200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Create a new order
+     */
+    async createOrder(requestParameters: CreateOrderRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<CreateOrder200Response> {
+        const response = await this.createOrderRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for deleteBook without sending the request
+     */
+    async deleteBookRequestOpts(requestParameters: DeleteBookRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['book'] == null) {
+            throw new runtime.RequiredError(
+                'book',
+                'Required parameter "book" was null or undefined when calling deleteBook().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/books/{book}`;
+        urlPath = urlPath.replace(`{${"book"}}`, encodeURIComponent(String(requestParameters['book'])));
+
+        return {
+            path: urlPath,
+            method: 'DELETE',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Delete a book
+     */
+    async deleteBookRaw(requestParameters: DeleteBookRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+        const requestOptions = await this.deleteBookRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * Delete a book
+     */
+    async deleteBook(requestParameters: DeleteBookRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+        const response = await this.deleteBookRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for findBookLocations without sending the request
+     */
+    async findBookLocationsRequestOpts(requestParameters: FindBookLocationsRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['bookId'] == null) {
+            throw new runtime.RequiredError(
+                'bookId',
+                'Required parameter "bookId" was null or undefined when calling findBookLocations().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/warehouse/books/{bookId}/locations`;
+        urlPath = urlPath.replace(`{${"bookId"}}`, encodeURIComponent(String(requestParameters['bookId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Find where a book is located
+     */
+    async findBookLocationsRaw(requestParameters: FindBookLocationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<ShelfStock>>> {
+        const requestOptions = await this.findBookLocationsRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(ShelfStockFromJSON));
+    }
+
+    /**
+     * Find where a book is located
+     */
+    async findBookLocations(requestParameters: FindBookLocationsRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<ShelfStock>> {
+        const response = await this.findBookLocationsRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for fulfillOrder without sending the request
+     */
+    async fulfillOrderRequestOpts(requestParameters: FulfillOrderRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['orderId'] == null) {
+            throw new runtime.RequiredError(
+                'orderId',
+                'Required parameter "orderId" was null or undefined when calling fulfillOrder().'
+            );
+        }
+
+        if (requestParameters['fulfillOrderBody'] == null) {
+            throw new runtime.RequiredError(
+                'fulfillOrderBody',
+                'Required parameter "fulfillOrderBody" was null or undefined when calling fulfillOrder().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/orders/{orderId}/fulfill`;
+        urlPath = urlPath.replace(`{${"orderId"}}`, encodeURIComponent(String(requestParameters['orderId'])));
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: FulfillOrderBodyToJSON(requestParameters['fulfillOrderBody']),
+        };
+    }
+
+    /**
+     * Fulfill an order
+     */
+    async fulfillOrderRaw(requestParameters: FulfillOrderRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+        const requestOptions = await this.fulfillOrderRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * Fulfill an order
+     */
+    async fulfillOrder(requestParameters: FulfillOrderRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+        const response = await this.fulfillOrderRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getBookInfo without sending the request
+     */
+    async getBookInfoRequestOpts(requestParameters: GetBookInfoRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['book'] == null) {
+            throw new runtime.RequiredError(
+                'book',
+                'Required parameter "book" was null or undefined when calling getBookInfo().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/books/{book}`;
+        urlPath = urlPath.replace(`{${"book"}}`, encodeURIComponent(String(requestParameters['book'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Get information about a book
+     */
+    async getBookInfoRaw(requestParameters: GetBookInfoRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<BookInfo>> {
+        const requestOptions = await this.getBookInfoRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => BookInfoFromJSON(jsonValue));
+    }
+
+    /**
+     * Get information about a book
+     */
+    async getBookInfo(requestParameters: GetBookInfoRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<BookInfo> {
+        const response = await this.getBookInfoRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getBookStock without sending the request
+     */
+    async getBookStockRequestOpts(requestParameters: GetBookStockRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['bookId'] == null) {
+            throw new runtime.RequiredError(
+                'bookId',
+                'Required parameter "bookId" was null or undefined when calling getBookStock().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/warehouse/books/{bookId}/stock`;
+        urlPath = urlPath.replace(`{${"bookId"}}`, encodeURIComponent(String(requestParameters['bookId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Get total stock for a book
+     */
+    async getBookStockRaw(requestParameters: GetBookStockRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<GetBookStock200Response>> {
+        const requestOptions = await this.getBookStockRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => GetBookStock200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * Get total stock for a book
+     */
+    async getBookStock(requestParameters: GetBookStockRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<GetBookStock200Response> {
+        const response = await this.getBookStockRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for getOrder without sending the request
+     */
+    async getOrderRequestOpts(requestParameters: GetOrderRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['orderId'] == null) {
+            throw new runtime.RequiredError(
+                'orderId',
+                'Required parameter "orderId" was null or undefined when calling getOrder().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/orders/{orderId}`;
+        urlPath = urlPath.replace(`{${"orderId"}}`, encodeURIComponent(String(requestParameters['orderId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * Get a specific order
+     */
+    async getOrderRaw(requestParameters: GetOrderRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Order>> {
+        const requestOptions = await this.getOrderRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => OrderFromJSON(jsonValue));
+    }
+
+    /**
+     * Get a specific order
+     */
+    async getOrder(requestParameters: GetOrderRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Order> {
+        const response = await this.getOrderRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for listBooks without sending the request
+     */
+    async listBooksRequestOpts(): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/books`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * List all books
+     */
+    async listBooksRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<BookInfo>>> {
+        const requestOptions = await this.listBooksRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(BookInfoFromJSON));
+    }
+
+    /**
+     * List all books
+     */
+    async listBooks(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<BookInfo>> {
+        const response = await this.listBooksRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for listOrders without sending the request
+     */
+    async listOrdersRequestOpts(): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/orders`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * List all orders
+     */
+    async listOrdersRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<Array<Order>>> {
+        const requestOptions = await this.listOrdersRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(OrderFromJSON));
+    }
+
+    /**
+     * List all orders
+     */
+    async listOrders(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<Array<Order>> {
+        const response = await this.listOrdersRaw(initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for placeBooksOnShelf without sending the request
+     */
+    async placeBooksOnShelfRequestOpts(requestParameters: PlaceBooksOnShelfRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['placeOnShelfBody'] == null) {
+            throw new runtime.RequiredError(
+                'placeOnShelfBody',
+                'Required parameter "placeOnShelfBody" was null or undefined when calling placeBooksOnShelf().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/warehouse/shelves`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: PlaceOnShelfBodyToJSON(requestParameters['placeOnShelfBody']),
+        };
+    }
+
+    /**
+     * Place books on a shelf
+     */
+    async placeBooksOnShelfRaw(requestParameters: PlaceBooksOnShelfRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+        const requestOptions = await this.placeBooksOnShelfRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse<any>(response);
+    }
+
+    /**
+     * Place books on a shelf
+     */
+    async placeBooksOnShelf(requestParameters: PlaceBooksOnShelfRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+        const response = await this.placeBooksOnShelfRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
 
     /**
      * Creates request options for sayHello without sending the request
