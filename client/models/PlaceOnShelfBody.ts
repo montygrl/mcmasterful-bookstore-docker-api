@@ -19,6 +19,7 @@ import { mapValues } from '../runtime';
  * @interface PlaceOnShelfBody
  */
 export interface PlaceOnShelfBody {
+    [key: string]: any | any;
     /**
      * 
      * @type {string}
@@ -59,6 +60,7 @@ export function PlaceOnShelfBodyFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
+            ...json,
         'bookId': json['bookId'],
         'numberOfBooks': json['numberOfBooks'],
         'shelf': json['shelf'],
@@ -76,6 +78,7 @@ export function PlaceOnShelfBodyToJSONTyped(value?: PlaceOnShelfBody | null, ign
 
     return {
         
+            ...value,
         'bookId': value['bookId'],
         'numberOfBooks': value['numberOfBooks'],
         'shelf': value['shelf'],

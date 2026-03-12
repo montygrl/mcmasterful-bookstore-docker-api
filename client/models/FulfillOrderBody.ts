@@ -27,6 +27,7 @@ import {
  * @interface FulfillOrderBody
  */
 export interface FulfillOrderBody {
+    [key: string]: any | any;
     /**
      * 
      * @type {Array<FulfillmentItem>}
@@ -53,6 +54,7 @@ export function FulfillOrderBodyFromJSONTyped(json: any, ignoreDiscriminator: bo
     }
     return {
         
+            ...json,
         'fulfillment': ((json['fulfillment'] as Array<any>).map(FulfillmentItemFromJSON)),
     };
 }
@@ -68,6 +70,7 @@ export function FulfillOrderBodyToJSONTyped(value?: FulfillOrderBody | null, ign
 
     return {
         
+            ...value,
         'fulfillment': ((value['fulfillment'] as Array<any>).map(FulfillmentItemToJSON)),
     };
 }

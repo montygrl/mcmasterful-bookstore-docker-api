@@ -12,7 +12,7 @@ import { OrderRoutes } from './../src/orders/orders.route';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { BookRoutes } from './../src/books/book.route';
 import type { Context, Next, Middleware, Request as KRequest, Response as KResponse } from 'koa';
-import Router from '@koa/router';
+import type * as KoaRouter from '@koa/router';
 
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -29,7 +29,7 @@ const models: TsoaRoute.Models = {
             "shelf": {"ref":"ShelfId","required":true},
             "count": {"dataType":"double","required":true},
         },
-        "additionalProperties": false,
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "BookID": {
@@ -44,7 +44,7 @@ const models: TsoaRoute.Models = {
             "numberOfBooks": {"dataType":"double","required":true},
             "shelf": {"ref":"ShelfId","required":true},
         },
-        "additionalProperties": false,
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "OrderId": {
@@ -65,7 +65,7 @@ const models: TsoaRoute.Models = {
             "fulfilled": {"dataType":"boolean","required":true},
             "createdAt": {"dataType":"datetime","required":true},
         },
-        "additionalProperties": false,
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CreateOrderBody": {
@@ -73,7 +73,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "books": {"dataType":"array","array":{"dataType":"refAlias","ref":"BookID"},"required":true},
         },
-        "additionalProperties": false,
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "FulfillmentItem": {
@@ -83,7 +83,7 @@ const models: TsoaRoute.Models = {
             "shelf": {"dataType":"string","required":true},
             "numberOfBooks": {"dataType":"double","required":true},
         },
-        "additionalProperties": false,
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "FulfillOrderBody": {
@@ -91,7 +91,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "fulfillment": {"dataType":"array","array":{"dataType":"refObject","ref":"FulfillmentItem"},"required":true},
         },
-        "additionalProperties": false,
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "BookInfo": {
@@ -105,7 +105,7 @@ const models: TsoaRoute.Models = {
             "image": {"dataType":"string","required":true},
             "stock": {"dataType":"double"},
         },
-        "additionalProperties": false,
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CreateBookBody": {
@@ -118,16 +118,16 @@ const models: TsoaRoute.Models = {
             "author": {"dataType":"string","required":true},
             "image": {"dataType":"string","required":true},
         },
-        "additionalProperties": false,
+        "additionalProperties": true,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };
-const templateService = new KoaTemplateService(models, {"noImplicitAdditionalProperties":"throw-on-extras","bodyCoercion":true});
+const templateService = new KoaTemplateService(models, {"noImplicitAdditionalProperties":"ignore","bodyCoercion":true});
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 
-export function RegisterRoutes(router: Router) {
+export function RegisterRoutes(router: KoaRouter) {
 
     // ###########################################################################################################
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look

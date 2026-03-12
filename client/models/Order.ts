@@ -19,6 +19,7 @@ import { mapValues } from '../runtime';
  * @interface Order
  */
 export interface Order {
+    [key: string]: any | any;
     /**
      * 
      * @type {string}
@@ -66,6 +67,7 @@ export function OrderFromJSONTyped(json: any, ignoreDiscriminator: boolean): Ord
     }
     return {
         
+            ...json,
         'orderId': json['orderId'],
         'books': json['books'],
         'fulfilled': json['fulfilled'],
@@ -84,6 +86,7 @@ export function OrderToJSONTyped(value?: Order | null, ignoreDiscriminator: bool
 
     return {
         
+            ...value,
         'orderId': value['orderId'],
         'books': value['books'],
         'fulfilled': value['fulfilled'],

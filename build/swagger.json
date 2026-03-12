@@ -1,215 +1,210 @@
 {
-	"openapi": "3.0.0",
-	"components": {
-		"examples": {},
-		"headers": {},
-		"parameters": {},
-		"requestBodies": {},
-		"responses": {},
-		"schemas": {
-			"ShelfId": {
-				"type": "string"
-			},
-			"ShelfStock": {
-				"properties": {
-					"shelf": {
-						"$ref": "#/components/schemas/ShelfId"
-					},
-					"count": {
-						"type": "number",
-						"format": "double"
-					}
+	"basePath": "/api",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {
+		"ShelfId": {
+			"type": "string"
+		},
+		"ShelfStock": {
+			"properties": {
+				"shelf": {
+					"$ref": "#/definitions/ShelfId"
 				},
-				"required": [
-					"shelf",
-					"count"
-				],
-				"type": "object",
-				"additionalProperties": false
+				"count": {
+					"type": "number",
+					"format": "double"
+				}
 			},
-			"BookID": {
-				"type": "string"
-			},
-			"PlaceOnShelfBody": {
-				"properties": {
-					"bookId": {
-						"$ref": "#/components/schemas/BookID"
-					},
-					"numberOfBooks": {
-						"type": "number",
-						"format": "double"
-					},
-					"shelf": {
-						"$ref": "#/components/schemas/ShelfId"
-					}
+			"required": [
+				"shelf",
+				"count"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"BookID": {
+			"type": "string"
+		},
+		"PlaceOnShelfBody": {
+			"properties": {
+				"bookId": {
+					"$ref": "#/definitions/BookID"
 				},
-				"required": [
-					"bookId",
-					"numberOfBooks",
-					"shelf"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"OrderId": {
-				"type": "string"
-			},
-			"Record_BookID.number_": {
-				"properties": {},
-				"additionalProperties": {
+				"numberOfBooks": {
 					"type": "number",
 					"format": "double"
 				},
-				"type": "object",
-				"description": "Construct a type with a set of properties K of type T"
+				"shelf": {
+					"$ref": "#/definitions/ShelfId"
+				}
 			},
-			"Order": {
-				"properties": {
-					"orderId": {
-						"$ref": "#/components/schemas/OrderId"
-					},
-					"books": {
-						"$ref": "#/components/schemas/Record_BookID.number_"
-					},
-					"fulfilled": {
-						"type": "boolean"
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"orderId",
-					"books",
-					"fulfilled",
-					"createdAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"CreateOrderBody": {
-				"properties": {
-					"books": {
-						"items": {
-							"$ref": "#/components/schemas/BookID"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"books"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"FulfillmentItem": {
-				"properties": {
-					"book": {
-						"$ref": "#/components/schemas/BookID"
-					},
-					"shelf": {
-						"type": "string"
-					},
-					"numberOfBooks": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"book",
-					"shelf",
-					"numberOfBooks"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"FulfillOrderBody": {
-				"properties": {
-					"fulfillment": {
-						"items": {
-							"$ref": "#/components/schemas/FulfillmentItem"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"fulfillment"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"BookInfo": {
-				"properties": {
-					"id": {
-						"$ref": "#/components/schemas/BookID"
-					},
-					"name": {
-						"type": "string"
-					},
-					"author": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"image": {
-						"type": "string"
-					},
-					"stock": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"author",
-					"description",
-					"price",
-					"image"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"CreateBookBody": {
-				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"description": {
-						"type": "string"
-					},
-					"author": {
-						"type": "string"
-					},
-					"image": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name",
-					"price",
-					"description",
-					"author",
-					"image"
-				],
-				"type": "object",
-				"additionalProperties": false
-			}
+			"required": [
+				"bookId",
+				"numberOfBooks",
+				"shelf"
+			],
+			"type": "object",
+			"additionalProperties": true
 		},
-		"securitySchemes": {}
+		"OrderId": {
+			"type": "string"
+		},
+		"Record_BookID.number_": {
+			"properties": {},
+			"additionalProperties": {
+				"type": "number",
+				"format": "double"
+			},
+			"type": "object",
+			"description": "Construct a type with a set of properties K of type T"
+		},
+		"Order": {
+			"properties": {
+				"orderId": {
+					"$ref": "#/definitions/OrderId"
+				},
+				"books": {
+					"$ref": "#/definitions/Record_BookID.number_"
+				},
+				"fulfilled": {
+					"type": "boolean"
+				},
+				"createdAt": {
+					"type": "string",
+					"format": "date-time"
+				}
+			},
+			"required": [
+				"orderId",
+				"books",
+				"fulfilled",
+				"createdAt"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"CreateOrderBody": {
+			"properties": {
+				"books": {
+					"items": {
+						"$ref": "#/definitions/BookID"
+					},
+					"type": "array"
+				}
+			},
+			"required": [
+				"books"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"FulfillmentItem": {
+			"properties": {
+				"book": {
+					"$ref": "#/definitions/BookID"
+				},
+				"shelf": {
+					"type": "string"
+				},
+				"numberOfBooks": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"book",
+				"shelf",
+				"numberOfBooks"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"FulfillOrderBody": {
+			"properties": {
+				"fulfillment": {
+					"items": {
+						"$ref": "#/definitions/FulfillmentItem"
+					},
+					"type": "array"
+				}
+			},
+			"required": [
+				"fulfillment"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"BookInfo": {
+			"properties": {
+				"id": {
+					"$ref": "#/definitions/BookID"
+				},
+				"name": {
+					"type": "string"
+				},
+				"author": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"price": {
+					"type": "number",
+					"format": "double"
+				},
+				"image": {
+					"type": "string"
+				},
+				"stock": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"id",
+				"name",
+				"author",
+				"description",
+				"price",
+				"image"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"CreateBookBody": {
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"price": {
+					"type": "number",
+					"format": "double"
+				},
+				"description": {
+					"type": "string"
+				},
+				"author": {
+					"type": "string"
+				},
+				"image": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"name",
+				"price",
+				"description",
+				"author",
+				"image"
+			],
+			"type": "object",
+			"additionalProperties": true
+		}
 	},
 	"info": {
 		"title": "assignment-template",
@@ -224,15 +219,14 @@
 		"/hello/{name}": {
 			"get": {
 				"operationId": "SayHello",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
+						"schema": {
+							"type": "string"
 						}
 					}
 				},
@@ -242,9 +236,7 @@
 						"in": "path",
 						"name": "name",
 						"required": true,
-						"schema": {
-							"type": "string"
-						}
+						"type": "string"
 					}
 				]
 			}
@@ -252,18 +244,17 @@
 		"/warehouse/books/{bookId}/locations": {
 			"get": {
 				"operationId": "FindBookLocations",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/ShelfStock"
-									},
-									"type": "array"
-								}
-							}
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/ShelfStock"
+							},
+							"type": "array"
 						}
 					}
 				},
@@ -275,7 +266,7 @@
 						"name": "bookId",
 						"required": true,
 						"schema": {
-							"$ref": "#/components/schemas/BookID"
+							"$ref": "#/definitions/BookID"
 						}
 					}
 				]
@@ -284,28 +275,27 @@
 		"/warehouse/books/{bookId}/stock": {
 			"get": {
 				"operationId": "GetBookStock",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"stock": {
-											"type": "number",
-											"format": "double"
-										},
-										"bookId": {
-											"$ref": "#/components/schemas/BookID"
-										}
-									},
-									"required": [
-										"stock",
-										"bookId"
-									],
-									"type": "object"
+						"schema": {
+							"properties": {
+								"stock": {
+									"type": "number",
+									"format": "double"
+								},
+								"bookId": {
+									"$ref": "#/definitions/BookID"
 								}
-							}
+							},
+							"required": [
+								"stock",
+								"bookId"
+							],
+							"type": "object"
 						}
 					}
 				},
@@ -317,7 +307,7 @@
 						"name": "bookId",
 						"required": true,
 						"schema": {
-							"$ref": "#/components/schemas/BookID"
+							"$ref": "#/definitions/BookID"
 						}
 					}
 				]
@@ -326,49 +316,49 @@
 		"/warehouse/shelves": {
 			"post": {
 				"operationId": "PlaceBooksOnShelf",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"additionalProperties": false,
-									"type": "object"
-								}
-							}
+						"schema": {
+							"additionalProperties": true,
+							"type": "object"
 						}
 					}
 				},
+				"consumes": [
+					"application/json"
+				],
 				"summary": "Place books on a shelf",
 				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/PlaceOnShelfBody"
-							}
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/PlaceOnShelfBody"
 						}
 					}
-				}
+				]
 			}
 		},
 		"/orders": {
 			"get": {
 				"operationId": "ListOrders",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Order"
-									},
-									"type": "array"
-								}
-							}
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Order"
+							},
+							"type": "array"
 						}
 					}
 				},
@@ -378,53 +368,53 @@
 			},
 			"post": {
 				"operationId": "CreateOrder",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"orderId": {
-											"$ref": "#/components/schemas/OrderId"
-										}
-									},
-									"required": [
-										"orderId"
-									],
-									"type": "object"
+						"schema": {
+							"properties": {
+								"orderId": {
+									"$ref": "#/definitions/OrderId"
 								}
-							}
+							},
+							"required": [
+								"orderId"
+							],
+							"type": "object"
 						}
 					}
 				},
+				"consumes": [
+					"application/json"
+				],
 				"summary": "Create a new order",
 				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateOrderBody"
-							}
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/CreateOrderBody"
 						}
 					}
-				}
+				]
 			}
 		},
 		"/orders/{orderId}": {
 			"get": {
 				"operationId": "GetOrder",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Order"
-								}
-							}
+						"schema": {
+							"$ref": "#/definitions/Order"
 						}
 					}
 				},
@@ -436,7 +426,7 @@
 						"name": "orderId",
 						"required": true,
 						"schema": {
-							"$ref": "#/components/schemas/OrderId"
+							"$ref": "#/definitions/OrderId"
 						}
 					}
 				]
@@ -445,19 +435,21 @@
 		"/orders/{orderId}/fulfill": {
 			"post": {
 				"operationId": "FulfillOrder",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"additionalProperties": false,
-									"type": "object"
-								}
-							}
+						"schema": {
+							"additionalProperties": true,
+							"type": "object"
 						}
 					}
 				},
+				"consumes": [
+					"application/json"
+				],
 				"summary": "Fulfill an order",
 				"security": [],
 				"parameters": [
@@ -466,37 +458,34 @@
 						"name": "orderId",
 						"required": true,
 						"schema": {
-							"$ref": "#/components/schemas/OrderId"
+							"$ref": "#/definitions/OrderId"
+						}
+					},
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/FulfillOrderBody"
 						}
 					}
-				],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/FulfillOrderBody"
-							}
-						}
-					}
-				}
+				]
 			}
 		},
 		"/books": {
 			"get": {
 				"operationId": "ListBooks",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/BookInfo"
-									},
-									"type": "array"
-								}
-							}
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/BookInfo"
+							},
+							"type": "array"
 						}
 					}
 				},
@@ -506,53 +495,53 @@
 			},
 			"post": {
 				"operationId": "CreateOrUpdateBook",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {
-										"id": {
-											"type": "string"
-										}
-									},
-									"required": [
-										"id"
-									],
-									"type": "object"
+						"schema": {
+							"properties": {
+								"id": {
+									"type": "string"
 								}
-							}
+							},
+							"required": [
+								"id"
+							],
+							"type": "object"
 						}
 					}
 				},
+				"consumes": [
+					"application/json"
+				],
 				"summary": "Create or update a book",
 				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateBookBody"
-							}
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/CreateBookBody"
 						}
 					}
-				}
+				]
 			}
 		},
 		"/books/{book}": {
 			"get": {
 				"operationId": "GetBookInfo",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Information about the book and its stock levels",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/BookInfo"
-								}
-							}
+						"schema": {
+							"$ref": "#/definitions/BookInfo"
 						}
 					}
 				},
@@ -565,23 +554,22 @@
 						"name": "book",
 						"required": true,
 						"schema": {
-							"$ref": "#/components/schemas/BookID"
+							"$ref": "#/definitions/BookID"
 						}
 					}
 				]
 			},
 			"delete": {
 				"operationId": "DeleteBook",
+				"produces": [
+					"application/json"
+				],
 				"responses": {
 					"200": {
 						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"additionalProperties": false,
-									"type": "object"
-								}
-							}
+						"schema": {
+							"additionalProperties": true,
+							"type": "object"
 						}
 					}
 				},
@@ -593,16 +581,16 @@
 						"name": "book",
 						"required": true,
 						"schema": {
-							"$ref": "#/components/schemas/BookID"
+							"$ref": "#/definitions/BookID"
 						}
 					}
 				]
 			}
 		}
 	},
-	"servers": [
-		{
-			"url": "/"
-		}
-	]
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {}
 }

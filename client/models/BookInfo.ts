@@ -19,6 +19,7 @@ import { mapValues } from '../runtime';
  * @interface BookInfo
  */
 export interface BookInfo {
+    [key: string]: any | any;
     /**
      * 
      * @type {string}
@@ -86,6 +87,7 @@ export function BookInfoFromJSONTyped(json: any, ignoreDiscriminator: boolean): 
     }
     return {
         
+            ...json,
         'id': json['id'],
         'name': json['name'],
         'author': json['author'],
@@ -107,6 +109,7 @@ export function BookInfoToJSONTyped(value?: BookInfo | null, ignoreDiscriminator
 
     return {
         
+            ...value,
         'id': value['id'],
         'name': value['name'],
         'author': value['author'],

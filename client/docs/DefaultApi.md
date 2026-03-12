@@ -1,6 +1,6 @@
 # DefaultApi
 
-All URIs are relative to *http://localhost*
+All URIs are relative to */api*
 
 | Method | HTTP request | Description |
 |------------- | ------------- | -------------|
@@ -21,7 +21,7 @@ All URIs are relative to *http://localhost*
 
 ## createOrUpdateBook
 
-> CreateOrUpdateBook200Response createOrUpdateBook(createBookBody)
+> CreateOrUpdateBook200Response createOrUpdateBook(body)
 
 Create or update a book
 
@@ -40,7 +40,7 @@ async function example() {
 
   const body = {
     // CreateBookBody
-    createBookBody: ...,
+    body: ...,
   } satisfies CreateOrUpdateBookRequest;
 
   try {
@@ -60,7 +60,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **createBookBody** | [CreateBookBody](CreateBookBody.md) |  | |
+| **body** | [CreateBookBody](CreateBookBody.md) |  | |
 
 ### Return type
 
@@ -86,7 +86,7 @@ No authorization required
 
 ## createOrder
 
-> CreateOrder200Response createOrder(createOrderBody)
+> CreateOrder200Response createOrder(body)
 
 Create a new order
 
@@ -105,7 +105,7 @@ async function example() {
 
   const body = {
     // CreateOrderBody
-    createOrderBody: ...,
+    body: ...,
   } satisfies CreateOrderRequest;
 
   try {
@@ -125,7 +125,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **createOrderBody** | [CreateOrderBody](CreateOrderBody.md) |  | |
+| **body** | [CreateOrderBody](CreateOrderBody.md) |  | |
 
 ### Return type
 
@@ -151,7 +151,7 @@ No authorization required
 
 ## deleteBook
 
-> object deleteBook(book)
+> { [key: string]: any; } deleteBook(book)
 
 Delete a book
 
@@ -169,8 +169,8 @@ async function example() {
   const api = new DefaultApi();
 
   const body = {
-    // string
-    book: book_example,
+    // any
+    book: ...,
   } satisfies DeleteBookRequest;
 
   try {
@@ -190,11 +190,11 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **book** | `string` |  | [Defaults to `undefined`] |
+| **book** | `any` |  | [Defaults to `undefined`] |
 
 ### Return type
 
-**object**
+**{ [key: string]: any; }**
 
 ### Authorization
 
@@ -234,8 +234,8 @@ async function example() {
   const api = new DefaultApi();
 
   const body = {
-    // string
-    bookId: bookId_example,
+    // any
+    bookId: ...,
   } satisfies FindBookLocationsRequest;
 
   try {
@@ -255,7 +255,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **bookId** | `string` |  | [Defaults to `undefined`] |
+| **bookId** | `any` |  | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -281,7 +281,7 @@ No authorization required
 
 ## fulfillOrder
 
-> object fulfillOrder(orderId, fulfillOrderBody)
+> { [key: string]: any; } fulfillOrder(orderId, body)
 
 Fulfill an order
 
@@ -299,10 +299,10 @@ async function example() {
   const api = new DefaultApi();
 
   const body = {
-    // string
-    orderId: orderId_example,
+    // any
+    orderId: ...,
     // FulfillOrderBody
-    fulfillOrderBody: ...,
+    body: ...,
   } satisfies FulfillOrderRequest;
 
   try {
@@ -322,12 +322,12 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **orderId** | `string` |  | [Defaults to `undefined`] |
-| **fulfillOrderBody** | [FulfillOrderBody](FulfillOrderBody.md) |  | |
+| **orderId** | `any` |  | [Defaults to `undefined`] |
+| **body** | [FulfillOrderBody](FulfillOrderBody.md) |  | |
 
 ### Return type
 
-**object**
+**{ [key: string]: any; }**
 
 ### Authorization
 
@@ -367,8 +367,8 @@ async function example() {
   const api = new DefaultApi();
 
   const body = {
-    // string | The ID of the book to retrieve
-    book: book_example,
+    // any | The ID of the book to retrieve
+    book: ...,
   } satisfies GetBookInfoRequest;
 
   try {
@@ -388,7 +388,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **book** | `string` | The ID of the book to retrieve | [Defaults to `undefined`] |
+| **book** | `any` | The ID of the book to retrieve | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -432,8 +432,8 @@ async function example() {
   const api = new DefaultApi();
 
   const body = {
-    // string
-    bookId: bookId_example,
+    // any
+    bookId: ...,
   } satisfies GetBookStockRequest;
 
   try {
@@ -453,7 +453,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **bookId** | `string` |  | [Defaults to `undefined`] |
+| **bookId** | `any` |  | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -497,8 +497,8 @@ async function example() {
   const api = new DefaultApi();
 
   const body = {
-    // string
-    orderId: orderId_example,
+    // any
+    orderId: ...,
   } satisfies GetOrderRequest;
 
   try {
@@ -518,7 +518,7 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **orderId** | `string` |  | [Defaults to `undefined`] |
+| **orderId** | `any` |  | [Defaults to `undefined`] |
 
 ### Return type
 
@@ -658,7 +658,7 @@ No authorization required
 
 ## placeBooksOnShelf
 
-> object placeBooksOnShelf(placeOnShelfBody)
+> { [key: string]: any; } placeBooksOnShelf(body)
 
 Place books on a shelf
 
@@ -677,7 +677,7 @@ async function example() {
 
   const body = {
     // PlaceOnShelfBody
-    placeOnShelfBody: ...,
+    body: ...,
   } satisfies PlaceBooksOnShelfRequest;
 
   try {
@@ -697,11 +697,11 @@ example().catch(console.error);
 
 | Name | Type | Description  | Notes |
 |------------- | ------------- | ------------- | -------------|
-| **placeOnShelfBody** | [PlaceOnShelfBody](PlaceOnShelfBody.md) |  | |
+| **body** | [PlaceOnShelfBody](PlaceOnShelfBody.md) |  | |
 
 ### Return type
 
-**object**
+**{ [key: string]: any; }**
 
 ### Authorization
 

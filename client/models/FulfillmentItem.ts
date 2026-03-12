@@ -19,6 +19,7 @@ import { mapValues } from '../runtime';
  * @interface FulfillmentItem
  */
 export interface FulfillmentItem {
+    [key: string]: any | any;
     /**
      * 
      * @type {string}
@@ -59,6 +60,7 @@ export function FulfillmentItemFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
+            ...json,
         'book': json['book'],
         'shelf': json['shelf'],
         'numberOfBooks': json['numberOfBooks'],
@@ -76,6 +78,7 @@ export function FulfillmentItemToJSONTyped(value?: FulfillmentItem | null, ignor
 
     return {
         
+            ...value,
         'book': value['book'],
         'shelf': value['shelf'],
         'numberOfBooks': value['numberOfBooks'],

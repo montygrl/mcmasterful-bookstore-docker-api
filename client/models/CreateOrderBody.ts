@@ -19,6 +19,7 @@ import { mapValues } from '../runtime';
  * @interface CreateOrderBody
  */
 export interface CreateOrderBody {
+    [key: string]: any | any;
     /**
      * 
      * @type {Array<string>}
@@ -45,6 +46,7 @@ export function CreateOrderBodyFromJSONTyped(json: any, ignoreDiscriminator: boo
     }
     return {
         
+            ...json,
         'books': json['books'],
     };
 }
@@ -60,6 +62,7 @@ export function CreateOrderBodyToJSONTyped(value?: CreateOrderBody | null, ignor
 
     return {
         
+            ...value,
         'books': value['books'],
     };
 }

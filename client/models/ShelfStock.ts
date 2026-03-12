@@ -19,6 +19,7 @@ import { mapValues } from '../runtime';
  * @interface ShelfStock
  */
 export interface ShelfStock {
+    [key: string]: any | any;
     /**
      * 
      * @type {string}
@@ -52,6 +53,7 @@ export function ShelfStockFromJSONTyped(json: any, ignoreDiscriminator: boolean)
     }
     return {
         
+            ...json,
         'shelf': json['shelf'],
         'count': json['count'],
     };
@@ -68,6 +70,7 @@ export function ShelfStockToJSONTyped(value?: ShelfStock | null, ignoreDiscrimin
 
     return {
         
+            ...value,
         'shelf': value['shelf'],
         'count': value['count'],
     };

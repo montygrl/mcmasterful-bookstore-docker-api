@@ -19,6 +19,7 @@ import { mapValues } from '../runtime';
  * @interface CreateBookBody
  */
 export interface CreateBookBody {
+    [key: string]: any | any;
     /**
      * 
      * @type {string}
@@ -79,6 +80,7 @@ export function CreateBookBodyFromJSONTyped(json: any, ignoreDiscriminator: bool
     }
     return {
         
+            ...json,
         'id': json['id'] == null ? undefined : json['id'],
         'name': json['name'],
         'price': json['price'],
@@ -99,6 +101,7 @@ export function CreateBookBodyToJSONTyped(value?: CreateBookBody | null, ignoreD
 
     return {
         
+            ...value,
         'id': value['id'],
         'name': value['name'],
         'price': value['price'],

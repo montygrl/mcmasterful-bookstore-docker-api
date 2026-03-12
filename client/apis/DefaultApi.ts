@@ -50,40 +50,40 @@ import {
 } from '../models/index';
 
 export interface CreateOrUpdateBookRequest {
-    createBookBody: CreateBookBody;
+    body: CreateBookBody;
 }
 
 export interface CreateOrderRequest {
-    createOrderBody: CreateOrderBody;
+    body: CreateOrderBody;
 }
 
 export interface DeleteBookRequest {
-    book: string;
+    book: any;
 }
 
 export interface FindBookLocationsRequest {
-    bookId: string;
+    bookId: any;
 }
 
 export interface FulfillOrderRequest {
-    orderId: string;
-    fulfillOrderBody: FulfillOrderBody;
+    orderId: any;
+    body: FulfillOrderBody;
 }
 
 export interface GetBookInfoRequest {
-    book: string;
+    book: any;
 }
 
 export interface GetBookStockRequest {
-    bookId: string;
+    bookId: any;
 }
 
 export interface GetOrderRequest {
-    orderId: string;
+    orderId: any;
 }
 
 export interface PlaceBooksOnShelfRequest {
-    placeOnShelfBody: PlaceOnShelfBody;
+    body: PlaceOnShelfBody;
 }
 
 export interface SayHelloRequest {
@@ -99,10 +99,10 @@ export class DefaultApi extends runtime.BaseAPI {
      * Creates request options for createOrUpdateBook without sending the request
      */
     async createOrUpdateBookRequestOpts(requestParameters: CreateOrUpdateBookRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['createBookBody'] == null) {
+        if (requestParameters['body'] == null) {
             throw new runtime.RequiredError(
-                'createBookBody',
-                'Required parameter "createBookBody" was null or undefined when calling createOrUpdateBook().'
+                'body',
+                'Required parameter "body" was null or undefined when calling createOrUpdateBook().'
             );
         }
 
@@ -120,7 +120,7 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateBookBodyToJSON(requestParameters['createBookBody']),
+            body: CreateBookBodyToJSON(requestParameters['body']),
         };
     }
 
@@ -146,10 +146,10 @@ export class DefaultApi extends runtime.BaseAPI {
      * Creates request options for createOrder without sending the request
      */
     async createOrderRequestOpts(requestParameters: CreateOrderRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['createOrderBody'] == null) {
+        if (requestParameters['body'] == null) {
             throw new runtime.RequiredError(
-                'createOrderBody',
-                'Required parameter "createOrderBody" was null or undefined when calling createOrder().'
+                'body',
+                'Required parameter "body" was null or undefined when calling createOrder().'
             );
         }
 
@@ -167,7 +167,7 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: CreateOrderBodyToJSON(requestParameters['createOrderBody']),
+            body: CreateOrderBodyToJSON(requestParameters['body']),
         };
     }
 
@@ -219,7 +219,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Delete a book
      */
-    async deleteBookRaw(requestParameters: DeleteBookRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+    async deleteBookRaw(requestParameters: DeleteBookRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>> {
         const requestOptions = await this.deleteBookRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
@@ -229,7 +229,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Delete a book
      */
-    async deleteBook(requestParameters: DeleteBookRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+    async deleteBook(requestParameters: DeleteBookRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }> {
         const response = await this.deleteBookRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -290,10 +290,10 @@ export class DefaultApi extends runtime.BaseAPI {
             );
         }
 
-        if (requestParameters['fulfillOrderBody'] == null) {
+        if (requestParameters['body'] == null) {
             throw new runtime.RequiredError(
-                'fulfillOrderBody',
-                'Required parameter "fulfillOrderBody" was null or undefined when calling fulfillOrder().'
+                'body',
+                'Required parameter "body" was null or undefined when calling fulfillOrder().'
             );
         }
 
@@ -312,14 +312,14 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: FulfillOrderBodyToJSON(requestParameters['fulfillOrderBody']),
+            body: FulfillOrderBodyToJSON(requestParameters['body']),
         };
     }
 
     /**
      * Fulfill an order
      */
-    async fulfillOrderRaw(requestParameters: FulfillOrderRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+    async fulfillOrderRaw(requestParameters: FulfillOrderRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>> {
         const requestOptions = await this.fulfillOrderRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
@@ -329,7 +329,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Fulfill an order
      */
-    async fulfillOrder(requestParameters: FulfillOrderRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+    async fulfillOrder(requestParameters: FulfillOrderRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }> {
         const response = await this.fulfillOrderRaw(requestParameters, initOverrides);
         return await response.value();
     }
@@ -547,10 +547,10 @@ export class DefaultApi extends runtime.BaseAPI {
      * Creates request options for placeBooksOnShelf without sending the request
      */
     async placeBooksOnShelfRequestOpts(requestParameters: PlaceBooksOnShelfRequest): Promise<runtime.RequestOpts> {
-        if (requestParameters['placeOnShelfBody'] == null) {
+        if (requestParameters['body'] == null) {
             throw new runtime.RequiredError(
-                'placeOnShelfBody',
-                'Required parameter "placeOnShelfBody" was null or undefined when calling placeBooksOnShelf().'
+                'body',
+                'Required parameter "body" was null or undefined when calling placeBooksOnShelf().'
             );
         }
 
@@ -568,14 +568,14 @@ export class DefaultApi extends runtime.BaseAPI {
             method: 'POST',
             headers: headerParameters,
             query: queryParameters,
-            body: PlaceOnShelfBodyToJSON(requestParameters['placeOnShelfBody']),
+            body: PlaceOnShelfBodyToJSON(requestParameters['body']),
         };
     }
 
     /**
      * Place books on a shelf
      */
-    async placeBooksOnShelfRaw(requestParameters: PlaceBooksOnShelfRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<object>> {
+    async placeBooksOnShelfRaw(requestParameters: PlaceBooksOnShelfRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<{ [key: string]: any; }>> {
         const requestOptions = await this.placeBooksOnShelfRequestOpts(requestParameters);
         const response = await this.request(requestOptions, initOverrides);
 
@@ -585,7 +585,7 @@ export class DefaultApi extends runtime.BaseAPI {
     /**
      * Place books on a shelf
      */
-    async placeBooksOnShelf(requestParameters: PlaceBooksOnShelfRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<object> {
+    async placeBooksOnShelf(requestParameters: PlaceBooksOnShelfRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<{ [key: string]: any; }> {
         const response = await this.placeBooksOnShelfRaw(requestParameters, initOverrides);
         return await response.value();
     }
