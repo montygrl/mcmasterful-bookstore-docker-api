@@ -1,0 +1,14 @@
+{
+  "spec": {
+    "outputDirectory": "build",
+    "specFileBaseName": "books-swagger",
+    "basePath": "/api"
+  },
+  "routes": {
+    "routesDir": "build",
+    "routesFileName": "books-routes.ts",
+    "middleware": "koa"
+  },
+  "entryFile": "books/server.ts",
+  "controllerPathGlobs": ["src/books/**/*.route.ts"]
+}

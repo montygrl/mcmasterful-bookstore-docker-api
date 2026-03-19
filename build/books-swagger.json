@@ -1,0 +1,211 @@
+{
+	"basePath": "/api",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {
+		"BookID": {
+			"type": "string"
+		},
+		"BookInfo": {
+			"properties": {
+				"id": {
+					"$ref": "#/definitions/BookID"
+				},
+				"name": {
+					"type": "string"
+				},
+				"author": {
+					"type": "string"
+				},
+				"description": {
+					"type": "string"
+				},
+				"price": {
+					"type": "number",
+					"format": "double"
+				},
+				"image": {
+					"type": "string"
+				},
+				"stock": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"id",
+				"name",
+				"author",
+				"description",
+				"price",
+				"image"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"CreateBookBody": {
+			"properties": {
+				"id": {
+					"type": "string"
+				},
+				"name": {
+					"type": "string"
+				},
+				"price": {
+					"type": "number",
+					"format": "double"
+				},
+				"description": {
+					"type": "string"
+				},
+				"author": {
+					"type": "string"
+				},
+				"image": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"name",
+				"price",
+				"description",
+				"author",
+				"image"
+			],
+			"type": "object",
+			"additionalProperties": true
+		}
+	},
+	"info": {
+		"title": "assignment-template",
+		"version": "1.0.0",
+		"description": "This is a template repository for the first assignment in BVD 103 at McMaster Continuing Education.",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"paths": {
+		"/books": {
+			"get": {
+				"operationId": "ListBooks",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/BookInfo"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"summary": "List all books",
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateOrUpdateBook",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"properties": {
+								"id": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"id"
+							],
+							"type": "object"
+						}
+					}
+				},
+				"consumes": [
+					"application/json"
+				],
+				"summary": "Create or update a book",
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/CreateBookBody"
+						}
+					}
+				]
+			}
+		},
+		"/books/{book}": {
+			"get": {
+				"operationId": "GetBookInfo",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Information about the book and its stock levels",
+						"schema": {
+							"$ref": "#/definitions/BookInfo"
+						}
+					}
+				},
+				"summary": "Get information about a book",
+				"security": [],
+				"parameters": [
+					{
+						"description": "The ID of the book to retrieve",
+						"in": "path",
+						"name": "book",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/BookID"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteBook",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"additionalProperties": true,
+							"type": "object"
+						}
+					}
+				},
+				"summary": "Delete a book",
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "book",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/BookID"
+						}
+					}
+				]
+			}
+		}
+	},
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {}
+}

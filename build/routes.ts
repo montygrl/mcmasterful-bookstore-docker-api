@@ -12,7 +12,7 @@ import { OrderRoutes } from './../src/orders/orders.route';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { BookRoutes } from './../src/books/book.route';
 import type { Context, Next, Middleware, Request as KRequest, Response as KResponse } from 'koa';
-import Router from '@koa/router';
+import type * as KoaRouter from '@koa/router';
 
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -127,7 +127,7 @@ const templateService = new KoaTemplateService(models, {"noImplicitAdditionalPro
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 
-export function RegisterRoutes(router: Router) {
+export function RegisterRoutes(router: KoaRouter) {
 
     // ###########################################################################################################
     //  NOTE: If you do not see routes for all of your controllers in this file, then you might not have informed tsoa of where to look

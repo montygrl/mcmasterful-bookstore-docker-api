@@ -1,0 +1,172 @@
+{
+	"basePath": "/api",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {
+		"ShelfId": {
+			"type": "string"
+		},
+		"ShelfStock": {
+			"properties": {
+				"shelf": {
+					"$ref": "#/definitions/ShelfId"
+				},
+				"count": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"shelf",
+				"count"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"BookID": {
+			"type": "string"
+		},
+		"PlaceOnShelfBody": {
+			"properties": {
+				"bookId": {
+					"$ref": "#/definitions/BookID"
+				},
+				"numberOfBooks": {
+					"type": "number",
+					"format": "double"
+				},
+				"shelf": {
+					"$ref": "#/definitions/ShelfId"
+				}
+			},
+			"required": [
+				"bookId",
+				"numberOfBooks",
+				"shelf"
+			],
+			"type": "object",
+			"additionalProperties": true
+		}
+	},
+	"info": {
+		"title": "assignment-template",
+		"version": "1.0.0",
+		"description": "This is a template repository for the first assignment in BVD 103 at McMaster Continuing Education.",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"paths": {
+		"/warehouse/books/{bookId}/locations": {
+			"get": {
+				"operationId": "FindBookLocations",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/ShelfStock"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"summary": "Find where a book is located",
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "bookId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/BookID"
+						}
+					}
+				]
+			}
+		},
+		"/warehouse/books/{bookId}/stock": {
+			"get": {
+				"operationId": "GetBookStock",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"properties": {
+								"stock": {
+									"type": "number",
+									"format": "double"
+								},
+								"bookId": {
+									"$ref": "#/definitions/BookID"
+								}
+							},
+							"required": [
+								"stock",
+								"bookId"
+							],
+							"type": "object"
+						}
+					}
+				},
+				"summary": "Get total stock for a book",
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "bookId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/BookID"
+						}
+					}
+				]
+			}
+		},
+		"/warehouse/shelves": {
+			"post": {
+				"operationId": "PlaceBooksOnShelf",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"additionalProperties": true,
+							"type": "object"
+						}
+					}
+				},
+				"consumes": [
+					"application/json"
+				],
+				"summary": "Place books on a shelf",
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/PlaceOnShelfBody"
+						}
+					}
+				]
+			}
+		}
+	},
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {}
+}

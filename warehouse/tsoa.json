@@ -1,0 +1,14 @@
+{
+  "spec": {
+    "outputDirectory": "build",
+    "specFileBaseName": "warehouse-swagger",
+    "basePath": "/api"
+  },
+  "routes": {
+    "routesDir": "build",
+    "routesFileName": "warehouse-routes.ts",
+    "middleware": "koa"
+  },
+  "entryFile": "warehouse/server.ts",
+  "controllerPathGlobs": ["src/warehouse/**/*.route.ts"]
+}

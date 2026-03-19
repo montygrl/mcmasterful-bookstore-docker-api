@@ -1,0 +1,242 @@
+{
+	"basePath": "/api",
+	"consumes": [
+		"application/json"
+	],
+	"definitions": {
+		"OrderId": {
+			"type": "string"
+		},
+		"Record_BookID.number_": {
+			"properties": {},
+			"additionalProperties": {
+				"type": "number",
+				"format": "double"
+			},
+			"type": "object",
+			"description": "Construct a type with a set of properties K of type T"
+		},
+		"Order": {
+			"properties": {
+				"orderId": {
+					"$ref": "#/definitions/OrderId"
+				},
+				"books": {
+					"$ref": "#/definitions/Record_BookID.number_"
+				},
+				"fulfilled": {
+					"type": "boolean"
+				},
+				"createdAt": {
+					"type": "string",
+					"format": "date-time"
+				}
+			},
+			"required": [
+				"orderId",
+				"books",
+				"fulfilled",
+				"createdAt"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"BookID": {
+			"type": "string"
+		},
+		"CreateOrderBody": {
+			"properties": {
+				"books": {
+					"items": {
+						"$ref": "#/definitions/BookID"
+					},
+					"type": "array"
+				}
+			},
+			"required": [
+				"books"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"FulfillmentItem": {
+			"properties": {
+				"book": {
+					"$ref": "#/definitions/BookID"
+				},
+				"shelf": {
+					"type": "string"
+				},
+				"numberOfBooks": {
+					"type": "number",
+					"format": "double"
+				}
+			},
+			"required": [
+				"book",
+				"shelf",
+				"numberOfBooks"
+			],
+			"type": "object",
+			"additionalProperties": true
+		},
+		"FulfillOrderBody": {
+			"properties": {
+				"fulfillment": {
+					"items": {
+						"$ref": "#/definitions/FulfillmentItem"
+					},
+					"type": "array"
+				}
+			},
+			"required": [
+				"fulfillment"
+			],
+			"type": "object",
+			"additionalProperties": true
+		}
+	},
+	"info": {
+		"title": "assignment-template",
+		"version": "1.0.0",
+		"description": "This is a template repository for the first assignment in BVD 103 at McMaster Continuing Education.",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"paths": {
+		"/orders": {
+			"get": {
+				"operationId": "ListOrders",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"items": {
+								"$ref": "#/definitions/Order"
+							},
+							"type": "array"
+						}
+					}
+				},
+				"summary": "List all orders",
+				"security": [],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateOrder",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"properties": {
+								"orderId": {
+									"$ref": "#/definitions/OrderId"
+								}
+							},
+							"required": [
+								"orderId"
+							],
+							"type": "object"
+						}
+					}
+				},
+				"consumes": [
+					"application/json"
+				],
+				"summary": "Create a new order",
+				"security": [],
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/CreateOrderBody"
+						}
+					}
+				]
+			}
+		},
+		"/orders/{orderId}": {
+			"get": {
+				"operationId": "GetOrder",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"$ref": "#/definitions/Order"
+						}
+					}
+				},
+				"summary": "Get a specific order",
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/OrderId"
+						}
+					}
+				]
+			}
+		},
+		"/orders/{orderId}/fulfill": {
+			"post": {
+				"operationId": "FulfillOrder",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"schema": {
+							"additionalProperties": true,
+							"type": "object"
+						}
+					}
+				},
+				"consumes": [
+					"application/json"
+				],
+				"summary": "Fulfill an order",
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderId",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/OrderId"
+						}
+					},
+					{
+						"in": "body",
+						"name": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/FulfillOrderBody"
+						}
+					}
+				]
+			}
+		}
+	},
+	"produces": [
+		"application/json"
+	],
+	"swagger": "2.0",
+	"securityDefinitions": {}
+}

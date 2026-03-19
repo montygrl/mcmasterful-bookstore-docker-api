@@ -1,0 +1,14 @@
+{
+  "spec": {
+    "outputDirectory": "build",
+    "specFileBaseName": "orders-swagger",
+    "basePath": "/api"
+  },
+  "routes": {
+    "routesDir": "build",
+    "routesFileName": "orders-routes.ts",
+    "middleware": "koa"
+  },
+  "entryFile": "orders/server.ts",
+  "controllerPathGlobs": ["src/orders/**/*.route.ts"]
+}
