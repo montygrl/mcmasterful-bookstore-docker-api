@@ -1,22 +1,20 @@
-import amqp, { type Connection, type Channel } from 'amqplib';
+import amqp from 'amqplib';
 
-let connection: Connection | null = null;
-let channel: Channel | null = null;
+let channel: amqp.Channel | null = null;
 
 const RABBITMQ_URL = process.env.RABBITMQ_URL ?? 'amqp://localhost';
 
-export async function connectToRabbitMQ(): Promise<Channel> {
+export async function connectToRabbitMQ(): Promise<amqp.Channel> {
     if (channel) return channel;
-    
-    // Retry logic — RabbitMQ may not be ready immediately
+
     let retries = 10;
     while (retries > 0) {
         try {
-            connection = await amqp.connect(RABBITMQ_URL);
+            const connection = await amqp.connect(RABBITMQ_URL);
             channel = await connection.createChannel();
             console.log('Connected to RabbitMQ');
             return channel;
-        } catch (err) {
+        } catch {
             retries--;
             console.log(`RabbitMQ not ready, retrying... (${retries} left)`);
             await new Promise(res => setTimeout(res, 3000));
