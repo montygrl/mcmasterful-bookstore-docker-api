@@ -5,15 +5,20 @@ import Router from '@koa/router';
 import { RegisterRoutes } from '../build/orders-routes';
 import { connectToDatabase } from '../src/db';
 import { connectToRabbitMQ, subscribeToEvent } from '../src/messaging';
+import { addBookToCache, removeBookFromCache } from '../src/orders/book-cache';
 import { Db } from 'mongodb';
 
 export interface AppOrdersDatabaseState { ordersDb: Db; }
 
 async function setupSubscriptions(): Promise<void> {
-    // Cache valid book IDs locally when books are added
     await subscribeToEvent('books', 'book.added', async (data) => {
         const event = data as { id: string; name: string };
-        console.log(`Orders: caching book ${event.id}`);
+        addBookToCache(event.id);
+    });
+
+    await subscribeToEvent('books', 'book.deleted', async (data) => {
+        const event = data as { id: string };
+        removeBookFromCache(event.id);
     });
 }
 

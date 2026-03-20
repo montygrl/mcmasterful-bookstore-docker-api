@@ -1,7 +1,6 @@
 import { Route, Get, Post, Body, Path } from 'tsoa';
 import { getOrdersStorage } from './memory-adapter';
-import { getDatabase } from '../db';
-import { ObjectId } from 'mongodb';
+import { isValidBookId } from './book-cache';
 import type { BookID, OrderId, Order, FulfillmentItem } from './types';
 
 export interface CreateOrderBody {
@@ -12,19 +11,8 @@ export interface FulfillOrderBody {
   fulfillment: FulfillmentItem[];
 }
 
-async function validateBookIds(bookIds: string[]): Promise<{ valid: boolean; invalidIds: string[] }> {
-  const db = getDatabase();
-  const collection = db.collection('books');
-  const invalidIds: string[] = [];
-  for (const bookId of bookIds) {
-    try {
-      const objectId = ObjectId.createFromHexString(bookId);
-      const book = await collection.findOne({ _id: objectId });
-      if (!book) invalidIds.push(bookId);
-    } catch {
-      invalidIds.push(bookId);
-    }
-  }
+function validateBookIds(bookIds: string[]): { valid: boolean; invalidIds: string[] } {
+  const invalidIds = bookIds.filter(id => !isValidBookId(id));
   return { valid: invalidIds.length === 0, invalidIds };
 }
 
@@ -34,18 +22,12 @@ async function validateBookIds(bookIds: string[]): Promise<{ valid: boolean; inv
 @Route('orders')
 export class OrderRoutes {
 
-  /**
-   * @summary List all orders
-   */
   @Get('/')
   public async listOrders(): Promise<Order[]> {
     const ordersStorage = getOrdersStorage();
     return ordersStorage.listOrders();
   }
 
-  /**
-   * @summary Get a specific order
-   */
   @Get('{orderId}')
   public async getOrder(@Path() orderId: OrderId): Promise<Order> {
     const ordersStorage = getOrdersStorage();
@@ -54,12 +36,9 @@ export class OrderRoutes {
     return order;
   }
 
-  /**
-   * @summary Create a new order
-   */
   @Post('/')
   public async createOrder(@Body() body: CreateOrderBody): Promise<{ orderId: OrderId }> {
-    const validation = await validateBookIds(body.books);
+    const validation = validateBookIds(body.books);
     if (!validation.valid) {
       throw Object.assign(
         new Error(`Invalid book IDs: ${validation.invalidIds.join(', ')}`),
@@ -70,9 +49,6 @@ export class OrderRoutes {
     return ordersStorage.createOrder(body.books);
   }
 
-  /**
-   * @summary Fulfill an order
-   */
   @Post('{orderId}/fulfill')
   public async fulfillOrder(
     @Path() orderId: OrderId,
