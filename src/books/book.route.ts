@@ -3,6 +3,7 @@ import { getDatabase } from '../db';
 import { ObjectId } from 'mongodb';
 import { getWarehouseStorage } from '../warehouse/memory-adapter';
 import { lookupBookById } from './lookup';
+import { publishEvent } from '../messaging';
 import type { BookID, BookInfo, CreateBookBody } from './types';
 
 /**
@@ -11,9 +12,6 @@ import type { BookID, BookInfo, CreateBookBody } from './types';
 @Route('books')
 export class BookRoutes {
 
-  /**
-   * @summary List all books
-   */
   @Get('/')
   public async listBooks(): Promise<BookInfo[]> {
     const db = getDatabase();
@@ -22,24 +20,10 @@ export class BookRoutes {
     return Promise.all(documents.map(async (doc) => {
       const id = doc._id.toHexString();
       const stock = await warehouse.getTotalStock(id);
-      return {
-        id,
-        name: doc.name,
-        author: doc.author,
-        description: doc.description,
-        price: doc.price,
-        image: doc.image,
-        stock
-      };
+      return { id, name: doc.name, author: doc.author, description: doc.description, price: doc.price, image: doc.image, stock };
     }));
   }
 
-  /**
-   * @summary Get information about a book
-   * @description Returns detailed information about a specific book, including its current stock levels
-   * @param book The ID of the book to retrieve
-   * @returns Information about the book and its stock levels
-   */
   @Get('{book}')
   public async getBookInfo(@Path() book: BookID): Promise<BookInfo> {
     const db = getDatabase();
@@ -49,31 +33,29 @@ export class BookRoutes {
     return result;
   }
 
-  /**
-   * @summary Create or update a book
-   */
   @Post('/')
   public async createOrUpdateBook(@Body() body: CreateBookBody): Promise<{ id: string }> {
     const db = getDatabase();
     const collection = db.collection('books');
+    let id: string;
     if (body.id) {
       await collection.replaceOne(
         { _id: { $eq: ObjectId.createFromHexString(body.id) } },
         { name: body.name, description: body.description, price: body.price, author: body.author, image: body.image }
       );
-      return { id: body.id };
+      id = body.id;
     } else {
       const result = await collection.insertOne({
         name: body.name, description: body.description,
         price: body.price, author: body.author, image: body.image
       });
-      return { id: result.insertedId.toHexString() };
+      id = result.insertedId.toHexString();
     }
+    // Publish BookAdded event
+    await publishEvent('books', 'book.added', { id, name: body.name, author: body.author, price: body.price });
+    return { id };
   }
 
-  /**
-   * @summary Delete a book
-   */
   @Delete('{book}')
   public async deleteBook(@Path() book: BookID): Promise<object> {
     const db = getDatabase();
@@ -81,6 +63,8 @@ export class BookRoutes {
       { _id: { $eq: ObjectId.createFromHexString(book) } }
     );
     if (result.deletedCount !== 1) throw Object.assign(new Error('Book not found'), { status: 404 });
+    // Publish BookDeleted event
+    await publishEvent('books', 'book.deleted', { id: book });
     return {};
   }
 }
