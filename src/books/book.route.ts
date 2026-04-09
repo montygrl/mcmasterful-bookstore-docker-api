@@ -1,7 +1,7 @@
 import { Route, Get, Post, Delete, Path, Body } from 'tsoa';
 import { getDatabase } from '../db';
 import { ObjectId } from 'mongodb';
-import { getWarehouseStorage } from '../warehouse/memory-adapter';
+import { getCachedStock } from './stock-cache';
 import { lookupBookById } from './lookup';
 import { publishEvent } from '../messaging';
 import type { BookID, BookInfo, CreateBookBody } from './types';
@@ -15,22 +15,19 @@ export class BookRoutes {
   @Get('/')
   public async listBooks(): Promise<BookInfo[]> {
     const db = getDatabase();
-    const warehouse = getWarehouseStorage();
     const documents = await db.collection('books').find({}).toArray();
-    return Promise.all(documents.map(async (doc) => {
+    return documents.map((doc) => {
       const id = doc._id.toHexString();
-      const stock = await warehouse.getTotalStock(id);
-      return { id, name: doc.name, author: doc.author, description: doc.description, price: doc.price, image: doc.image, stock };
-    }));
+      return { id, name: doc.name, author: doc.author, description: doc.description, price: doc.price, image: doc.image, stock: getCachedStock(id) };
+    });
   }
 
   @Get('{book}')
   public async getBookInfo(@Path() book: BookID): Promise<BookInfo> {
     const db = getDatabase();
-    const warehouse = getWarehouseStorage();
-    const result = await lookupBookById(book, db, warehouse);
+    const result = await lookupBookById(book, db);
     if (!result) throw Object.assign(new Error('Book not found'), { status: 404 });
-    return result;
+    return { ...result, stock: getCachedStock(book) };
   }
 
   @Post('/')
@@ -51,7 +48,6 @@ export class BookRoutes {
       });
       id = result.insertedId.toHexString();
     }
-    // Publish BookAdded event
     await publishEvent('books', 'book.added', { id, name: body.name, author: body.author, price: body.price });
     return { id };
   }
@@ -63,7 +59,6 @@ export class BookRoutes {
       { _id: { $eq: ObjectId.createFromHexString(book) } }
     );
     if (result.deletedCount !== 1) throw Object.assign(new Error('Book not found'), { status: 404 });
-    // Publish BookDeleted event
     await publishEvent('books', 'book.deleted', { id: book });
     return {};
   }

@@ -1,6 +1,7 @@
 import { Route, Get, Post, Body, Path } from 'tsoa';
 import { getOrdersStorage } from './memory-adapter';
 import { isValidBookId } from './book-cache';
+import { publishEvent } from '../messaging';
 import type { BookID, OrderId, Order, FulfillmentItem } from './types';
 
 export interface CreateOrderBody {
@@ -74,11 +75,8 @@ export class OrderRoutes {
       }
     }
 
-    const { getWarehouseStorage } = await import('../warehouse/memory-adapter');
-    const warehouse = getWarehouseStorage();
-    for (const item of body.fulfillment) {
-      await warehouse.removeBooksFromShelf(item.book, item.numberOfBooks, item.shelf);
-    }
+    // Publish fulfillment event for warehouse to consume
+    await publishEvent('orders', 'order.fulfilled', { orderId, fulfillment: body.fulfillment });
 
     await ordersStorage.fulfillOrder(orderId);
     return { success: true };

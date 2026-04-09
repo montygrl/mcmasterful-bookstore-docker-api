@@ -5,15 +5,28 @@ import Router from '@koa/router';
 import { RegisterRoutes } from '../build/warehouse-routes';
 import { connectToDatabase } from '../src/db';
 import { connectToRabbitMQ, subscribeToEvent } from '../src/messaging';
+import { getWarehouseStorage } from '../src/warehouse/memory-adapter';
 import { Db } from 'mongodb';
 
 export interface AppWarehouseDatabaseState { warehouseDb: Db; }
 
 async function setupSubscriptions(): Promise<void> {
-    // Cache book names locally when books are added
     await subscribeToEvent('books', 'book.added', async (data) => {
         const event = data as { id: string; name: string };
         console.log(`Warehouse: caching book ${event.id} - ${event.name}`);
+    });
+
+    await subscribeToEvent('orders', 'order.fulfilled', async (data) => {
+        const event = data as { orderId: string; fulfillment: Array<{ book: string; numberOfBooks: number; shelf: string }> };
+        const warehouse = getWarehouseStorage();
+        for (const item of event.fulfillment) {
+            try {
+                await warehouse.removeBooksFromShelf(item.book, item.numberOfBooks, item.shelf);
+                console.log(`Warehouse: removed ${item.numberOfBooks} of ${item.book} from ${item.shelf}`);
+            } catch (err) {
+                console.error(`Warehouse: failed to remove books for fulfillment`, err);
+            }
+        }
     });
 }
 
