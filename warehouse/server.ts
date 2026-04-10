@@ -24,7 +24,7 @@ async function setupSubscriptions(): Promise<void> {
                 await warehouse.removeBooksFromShelf(item.book, item.numberOfBooks, item.shelf);
                 console.log(`Warehouse: removed ${item.numberOfBooks} of ${item.book} from ${item.shelf}`);
             } catch {
-                console.error(`Warehouse: failed to remove books for fulfillment`, err);
+                console.error('Warehouse: failed to remove books for fulfillment');
             }
         }
     });
