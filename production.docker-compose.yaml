@@ -1,0 +1,64 @@
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - books
+      - orders
+      - warehouse
+      - docs
+
+  front-end:
+    image: ghcr.io/bdv103/assignment-4/frontend:latest
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  mongo-books:
+    image: mongo:latest
+
+  mongo-orders:
+    image: mongo:latest
+
+  mongo-warehouse:
+    image: mongo:latest
+
+  books:
+    image: ghcr.io/bdv103/assignment-4/books:latest
+    environment:
+      - MONGODB_URL=mongodb://mongo-books:27017
+      - RABBITMQ_URL=amqp://rabbitmq
+    depends_on:
+      - mongo-books
+      - rabbitmq
+
+  orders:
+    image: ghcr.io/bdv103/assignment-4/orders:latest
+    environment:
+      - MONGODB_URL=mongodb://mongo-orders:27017
+      - RABBITMQ_URL=amqp://rabbitmq
+    depends_on:
+      - mongo-orders
+      - rabbitmq
+
+  warehouse:
+    image: ghcr.io/bdv103/assignment-4/warehouse:latest
+    environment:
+      - MONGODB_URL=mongodb://mongo-warehouse:27017
+      - RABBITMQ_URL=amqp://rabbitmq
+    depends_on:
+      - mongo-warehouse
+      - rabbitmq
+
+  docs:
+    image: ghcr.io/bdv103/assignment-4/docs:latest
+    depends_on:
+      - books
+      - orders
+      - warehouse
