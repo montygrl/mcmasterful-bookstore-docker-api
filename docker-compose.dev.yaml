@@ -1,0 +1,74 @@
+services:
+  nginx:
+    image: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - books
+      - orders
+      - warehouse
+      - docs
+
+  front-end:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  mongo-books:
+    image: mongo:latest
+
+  mongo-orders:
+    image: mongo:latest
+
+  mongo-warehouse:
+    image: mongo:latest
+
+  books:
+    build:
+      context: .
+      dockerfile: books/Dockerfile
+    environment:
+      - MONGODB_URL=mongodb://mongo-books:27017
+      - RABBITMQ_URL=amqp://rabbitmq
+    depends_on:
+      - mongo-books
+      - rabbitmq
+
+  orders:
+    build:
+      context: .
+      dockerfile: orders/Dockerfile
+    environment:
+      - MONGODB_URL=mongodb://mongo-orders:27017
+      - RABBITMQ_URL=amqp://rabbitmq
+    depends_on:
+      - mongo-orders
+      - rabbitmq
+
+  warehouse:
+    build:
+      context: .
+      dockerfile: warehouse/Dockerfile
+    environment:
+      - MONGODB_URL=mongodb://mongo-warehouse:27017
+      - RABBITMQ_URL=amqp://rabbitmq
+    depends_on:
+      - mongo-warehouse
+      - rabbitmq
+
+  docs:
+    build:
+      context: .
+      dockerfile: docs/Dockerfile
+    depends_on:
+      - books
+      - orders
+      - warehouse

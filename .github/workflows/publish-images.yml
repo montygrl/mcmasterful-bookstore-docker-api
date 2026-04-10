@@ -1,0 +1,72 @@
+name: Publish Docker Images
+
+on:
+  push:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set image tag
+        id: tag
+        run: |
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=latest" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build and push books
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: books/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/books:${{ steps.tag.outputs.tag }}
+
+      - name: Build and push orders
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: orders/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/orders:${{ steps.tag.outputs.tag }}
+
+      - name: Build and push warehouse
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: warehouse/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/warehouse:${{ steps.tag.outputs.tag }}
+
+      - name: Build and push docs
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docs/Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/docs:${{ steps.tag.outputs.tag }}
+
+      - name: Build and push frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: Dockerfile.frontend
+          push: true
+          tags: ghcr.io/${{ github.repository }}/frontend:${{ steps.tag.outputs.tag }}
